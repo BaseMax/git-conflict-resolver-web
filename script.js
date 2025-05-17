@@ -4,29 +4,22 @@ function resolveConflicts() {
   const lines = text.split('\n');
   const output = [];
   let inConflict = false;
-  let local = [], remote = [];
+  let local = [], remote = [], readingRemote = false;
 
   for (let line of lines) {
     if (line.startsWith('<<<<<<<')) {
       inConflict = true;
       local = [];
       remote = [];
+      readingRemote = false;
     } else if (line.startsWith('=======')) {
-      continue; // ignore separator
+      readingRemote = true;
     } else if (line.startsWith('>>>>>>>')) {
       inConflict = false;
-      if (mode === 'local') {
-        output.push(...local);
-      } else {
-        output.push(...remote);
-      }
+      output.push(...(mode === 'local' ? local : remote));
     } else {
       if (inConflict) {
-        if (remote.length > 0 || line === '=======') {
-          remote.push(line);
-        } else {
-          local.push(line);
-        }
+        (readingRemote ? remote : local).push(line);
       } else {
         output.push(line);
       }
@@ -34,4 +27,28 @@ function resolveConflicts() {
   }
 
   document.getElementById('output').textContent = output.join('\n');
+}
+
+function copyOutput() {
+  const output = document.getElementById('output');
+  const selection = window.getSelection();
+  const range = document.createRange();
+  range.selectNodeContents(output);
+  selection.removeAllRanges();
+  selection.addRange(range);
+  document.execCommand('copy');
+  alert('Resolved content copied to clipboard!');
+}
+
+let outputClickedOnce = false;
+function selectOutput(event) {
+  if (!outputClickedOnce) {
+    const output = document.getElementById('output');
+    const range = document.createRange();
+    const selection = window.getSelection();
+    range.selectNodeContents(output);
+    selection.removeAllRanges();
+    selection.addRange(range);
+    outputClickedOnce = true;
+  }
 }
