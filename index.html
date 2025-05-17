@@ -4,49 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Git Conflict Resolver</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      background: #f4f4f4;
-      padding: 2rem;
-      max-width: 1000px;
-      margin: auto;
-    }
-    h1 {
-      text-align: center;
-    }
-    textarea {
-      width: 100%;
-      height: 300px;
-      font-family: monospace;
-      font-size: 14px;
-      padding: 1rem;
-      box-sizing: border-box;
-    }
-    .options {
-      margin: 1rem 0;
-      text-align: center;
-    }
-    .output {
-      margin-top: 1rem;
-    }
-    pre {
-      background: #eaeaea;
-      padding: 1rem;
-      white-space: pre-wrap;
-      border: 1px solid #ccc;
-    }
-    button {
-      padding: 0.5rem 1.5rem;
-      font-size: 1rem;
-      cursor: pointer;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" src="style.css">
 </head>
 <body>
-
   <h1>Git Conflict Resolver</h1>
-
   <label for="input">Paste conflicted file content below:</label>
   <textarea id="input" placeholder="Paste Git conflict content here..."></textarea>
 
@@ -62,45 +23,6 @@
     <pre id="output"></pre>
   </div>
 
-  <script>
-    function resolveConflicts() {
-      const text = document.getElementById('input').value;
-      const mode = document.querySelector('input[name="mode"]:checked').value;
-      const lines = text.split('\n');
-      const output = [];
-      let inConflict = false;
-      let local = [], remote = [];
-
-      for (let line of lines) {
-        if (line.startsWith('<<<<<<<')) {
-          inConflict = true;
-          local = [];
-          remote = [];
-        } else if (line.startsWith('=======')) {
-          continue; // ignore separator
-        } else if (line.startsWith('>>>>>>>')) {
-          inConflict = false;
-          if (mode === 'local') {
-            output.push(...local);
-          } else {
-            output.push(...remote);
-          }
-        } else {
-          if (inConflict) {
-            if (remote.length > 0 || line === '=======') {
-              remote.push(line);
-            } else {
-              local.push(line);
-            }
-          } else {
-            output.push(line);
-          }
-        }
-      }
-
-      document.getElementById('output').textContent = output.join('\n');
-    }
-  </script>
-
+  <script type="text/javascript" src="script.js"></script>
 </body>
 </html>
