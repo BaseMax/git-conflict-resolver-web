@@ -1,3 +1,17 @@
+/**
+ * 
+ * @Name: git-conflict-resolver-web
+ * @Author: Max Base
+ * @Repository: https://github.com/BaseMax/git-conflict-resolver-web
+ * @License: MIT
+ * @Date: 05/17/2025
+ *
+**/
+
+// Variables
+let outputClickedOnce = false;
+
+// Functions
 function resolveConflicts() {
   const text = document.getElementById('input').value;
   const mode = document.querySelector('input[name="mode"]:checked').value;
@@ -40,7 +54,6 @@ function copyOutput() {
   alert('Resolved content copied to clipboard!');
 }
 
-let outputClickedOnce = false;
 function selectOutput(event) {
   if (!outputClickedOnce) {
     const output = document.getElementById('output');
