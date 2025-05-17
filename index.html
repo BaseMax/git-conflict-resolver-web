@@ -20,7 +20,8 @@
 
   <div class="output">
     <h2>Resolved Output:</h2>
-    <pre id="output"></pre>
+    <button class="copy-button" onclick="copyOutput()">Copy</button>
+    <pre id="output" tabindex="0" onclick="selectOutput(event)"></pre>
   </div>
 
   <script type="text/javascript" src="script.js"></script>
